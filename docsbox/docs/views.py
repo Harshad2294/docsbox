@@ -21,8 +21,10 @@ class DocumentView(Resource):
         task = queue.fetch_job(task_id)
         if task:
             json_response = request.args['json_response']
-            if json_response is not None and json_response == "No":
+            if json_response is not None and json_response == "No" and task.result is not None:
                 return task.status+","+task.result
+            elif json_response is not None and json_response == "No" and task.result == None:
+                return "processing"
             else:
                 return {
                     "id": task.id,
