@@ -1,4 +1,4 @@
-# docsbox [![Build Status](https://travis-ci.org/dveselov/docsbox.svg?branch=master)](https://travis-ci.org/dveselov/docsbox)
+# docsbox [![Build Status](https://travis-ci.org/Harshad2294/docsbox.svg?branch=master)](https://travis-ci.org/Harshad2294/docsbox/)
 
 `docsbox` is a standalone service that allows you convert office documents, like .docx and .pptx, into more useful filetypes like PDF, for viewing it in browser with PDF.js, or HTML for organizing full-text search of document content.  
 `docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document converting.
@@ -21,7 +21,7 @@ $ curl http://localhost/api/v1/9b643d78-d0c8-4552-a0c5-111a89896176
 
 $ curl -O http://localhost/media/9b643d78-d0c8-4552-a0c5-111a89896176.zip
 
-$ unzip -l 9b643d78-d0c8-4552-a0c5-111a89896176.zip 
+$ unzip -l 9b643d78-d0c8-4552-a0c5-111a89896176.zip
 
 Archive:  9b643d78-d0c8-4552-a0c5-111a89896176.zip
   Length      Date    Time    Name
@@ -34,7 +34,7 @@ Archive:  9b643d78-d0c8-4552-a0c5-111a89896176.zip
 ```
 
 ```bash
-$ cat options.json 
+$ cat options.json
 {
   "formats": ["pdf"],
   "thumbnails": {
@@ -77,11 +77,12 @@ Archive:  afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
 ```
 POST (multipart/form-data) /api/v1/
 file=@kittens.docx
+filename=kittens
 options={ # json, optional
     "formats": ["pdf"] # desired formats to be converted in, optional
     "thumbnails": { # optional
         "size": "320x240",
-    } 
+    }
 }
 
 GET /api/v1/{task_id}
