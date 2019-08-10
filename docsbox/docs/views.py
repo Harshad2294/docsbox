@@ -20,11 +20,12 @@ class DocumentView(Resource):
         queue = rq.get_queue()
         task = queue.fetch_job(task_id)
         if task:
-            return {
-                "id": task.id,
-                "status": task.status,
-                "result_url": task.result
-            }
+            return task.status+","+task.result
+            #{
+                #"id": task.id,
+                #"status": task.status,
+                #"result_url": task.result
+            #}
         else:
             return abort(404, message="Unknown task_id")
 
@@ -88,8 +89,9 @@ class DocumentCreateView(Resource):
                 task = process_document.queue(filename, tmp_file.name, options, {
                     "mimetype": mimetype,
                 })
-        return {
-            "id": task.id,
-            "status": task.status,
-            "mimetype":mimetype,
-        }
+        return task.id# return task id only
+        #{
+            #"id": task.id,
+            #"status": task.status,
+            #"mimetype":mimetype,
+        #}
