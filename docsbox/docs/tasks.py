@@ -17,31 +17,33 @@ from docsbox.docs.utils import make_zip_archive, make_thumbnails
 def remove_file(path):
     """
     Just removes a file.
-    Used for deleting original files (uploaded by user) and result files (result of converting) 
+    Used for deleting original files (uploaded by user) and result files (result of converting)
     """
     return os.remove(path)
 
 
 @rq.job(timeout=app.config["REDIS_JOB_TIMEOUT"])
-def process_document(path, options, meta):
+def process_document(filename, path, options, meta):
     current_task = get_current_job()
     with Office(app.config["LIBREOFFICE_PATH"]) as office: # acquire libreoffice lock
         with office.documentLoad(path) as original_document: # open original document
+            print ("PATH : ", str(path))
             with TemporaryDirectory() as tmp_dir: # create temp dir where output'll be stored
                 for fmt in options["formats"]: # iterate over requested formats
                     current_format = app.config["SUPPORTED_FORMATS"][fmt]
-                    output_path = os.path.join(tmp_dir, current_format["path"])
+                    #output_path = os.path.join(tmp_dir, current_format["path"])
+                    output_path = os.path.join(tmp_dir, filename+"."+current_format["path"])
                     original_document.saveAs(output_path, fmt=current_format["fmt"])
                 if options.get("thumbnails", None):
                     is_created = False
                     if meta["mimetype"] == "application/pdf":
                         pdf_path = path
                     elif "pdf" in options["formats"]:
-                        pdf_path = os.path.join(tmp_dir, "pdf")
+                        pdf_path = os.path.join(tmp_dir, filename+".pdf")
                     else:
                         pdf_tmp_file = NamedTemporaryFile()
                         pdf_path = pdf_tmp_file.name
-                        original_document.saveAs(pdf_tmp_file.name, fmt="pdf")
+                        original_document.saveAs(filename+".pdf", fmt="pdf")
                         is_created = True
                     image = Image(filename=pdf_path,
                                   resolution=app.config["THUMBNAILS_DPI"])

@@ -40,6 +40,7 @@ class DocumentCreateView(Resource):
             return abort(400, message="file field is required")
         else:
             with NamedTemporaryFile(delete=False, prefix=app.config["MEDIA_PATH"]) as tmp_file:
+                filename = request.form['filename']
                 request.files["file"].save(tmp_file)
                 tmp_file.flush()
                 tmp_file.close()
@@ -84,10 +85,11 @@ class DocumentCreateView(Resource):
                         }
                     else:
                         options = app.config["DEFAULT_OPTIONS"]
-                task = process_document.queue(tmp_file.name, options, {
+                task = process_document.queue(filename, tmp_file.name, options, {
                     "mimetype": mimetype,
                 })
         return {
             "id": task.id,
             "status": task.status,
+            "mimetype":mimetype,
         }
