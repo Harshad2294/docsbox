@@ -20,7 +20,7 @@ class DocumentView(Resource):
         queue = rq.get_queue()
         task = queue.fetch_job(task_id)
         if task:
-            json_response = request.form['json_response']
+            json_response = request.args['json_response']
             if json_response is not None and json_response == "No":
                 return task.status+","+task.result
             else:
