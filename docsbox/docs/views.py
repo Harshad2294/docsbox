@@ -20,12 +20,15 @@ class DocumentView(Resource):
         queue = rq.get_queue()
         task = queue.fetch_job(task_id)
         if task:
-            return task.status+","+task.result
-            #{
-                #"id": task.id,
-                #"status": task.status,
-                #"result_url": task.result
-            #}
+            json_response = request.form['json_response']
+            if json_response is not None and json_response == "No":
+                return task.status+","+task.result
+            else:
+                return {
+                    "id": task.id,
+                    "status": task.status,
+                    "result_url": task.result
+                }
         else:
             return abort(404, message="Unknown task_id")
 
@@ -37,11 +40,13 @@ class DocumentCreateView(Resource):
         Recieves file and options, checks file mimetype,
         validates options and creates converting task
         """
+        json_response = None
         if "file" not in request.files:
             return abort(400, message="file field is required")
         else:
             with NamedTemporaryFile(delete=False, prefix=app.config["MEDIA_PATH"]) as tmp_file:
                 filename = request.form['filename']
+                json_response = request.form['json_response']
                 request.files["file"].save(tmp_file)
                 tmp_file.flush()
                 tmp_file.close()
@@ -89,9 +94,10 @@ class DocumentCreateView(Resource):
                 task = process_document.queue(filename, tmp_file.name, options, {
                     "mimetype": mimetype,
                 })
-        return task.id# return task id only
-        #{
-            #"id": task.id,
-            #"status": task.status,
-            #"mimetype":mimetype,
-        #}
+        if json_response is not None and json_response == "No":
+            return task.id
+        else:
+            return {
+                "id": task.id,
+                "status": task.status,
+            }

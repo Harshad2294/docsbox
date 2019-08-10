@@ -78,6 +78,7 @@ Archive:  afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
 POST (multipart/form-data) /api/v1/
 file=@kittens.docx
 filename=kittens
+json_response={Yes/No}
 options={ # json, optional
     "formats": ["pdf"] # desired formats to be converted in, optional
     "thumbnails": { # optional
@@ -86,6 +87,7 @@ options={ # json, optional
 }
 
 GET /api/v1/{task_id}
+json_response={Yes/No}
 ```
 
 # Install
