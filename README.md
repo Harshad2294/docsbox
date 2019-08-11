@@ -4,7 +4,7 @@
 `docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document converting.
 
 ```bash
-$ curl -F "file=@kittens.docx" http://localhost/api/v1/
+$ curl -F "file=@kittens.docx" -F "filename=kittens" -F "json_response=Yes" http://localhost/api/v1/
 
 {
     "id": "9b643d78-d0c8-4552-a0c5-111a89896176",
