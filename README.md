@@ -11,7 +11,7 @@ $ curl -F "file=@kittens.docx" -F "filename=kittens" -F "json_response=Yes" http
     "status": "queued"
 }
 
-$ curl http://localhost/api/v1/9b643d78-d0c8-4552-a0c5-111a89896176
+$ curl -X GET -d "json_response=Yes" http://localhost/api/v1/9b643d78-d0c8-4552-a0c5-111a89896176
 
 {
     "id": "9b643d78-d0c8-4552-a0c5-111a89896176",
