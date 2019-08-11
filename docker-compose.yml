@@ -8,6 +8,7 @@ web:
   volumes:
     - ./docsbox:/home/docsbox
     - /tmp/media:/home/docsbox/media
+    - ./docsbox/policy.xml:/etc/ImageMagick-6/policy.xml
   command: gunicorn -b :8000 docsbox:app
 
 rqworker:
