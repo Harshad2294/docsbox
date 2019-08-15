@@ -37,12 +37,12 @@ $ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?resp
 }
 
 
-curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=text'
+$ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=text'
 
 finished,/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
 
 
-curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=xml'
+$ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=xml'
 
 <?xml version='1.0'?>
 <root>
