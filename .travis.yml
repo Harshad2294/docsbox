@@ -6,5 +6,5 @@ services:
   - docker
 
 script:
-#  - docker-compose run web nosetests
-  - docker-compose build
+  - docker-compose run web nosetests
+#  - docker-compose build
