@@ -1,7 +1,7 @@
 # docsbox [![Build Status](https://travis-ci.org/Harshad2294/docsbox.svg?branch=master)](https://travis-ci.org/Harshad2294/docsbox/)
 
 `docsbox` is a standalone service that allows you to convert office documents, like .docx and .pptx, into more useful filetypes like PDF, for viewing it in browser with PDF.js, or HTML for organizing full-text search of document content.  
-`docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document converting.
+`docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document conversion.
 
 `Accepted 'response_type' : json,text,xml`
 
@@ -75,43 +75,44 @@ $ cat options.json
   }
 }
 
-$ curl -i -F "file=@kittens.ppt" -F "options=<options.json" http://localhost/api/v1/
+$ curl -F "file=@kittens.doc" -F "options=<options.json" 'http://localhost/api/v1/?response_type=json&filename=kittens'
 
 {
-  "id": "afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1",
+  "id": "b82d0081-a0c6-496a-8ea0-910f259bcf6c",
   "status": "queued"
 }
 
-$ curl http://localhost/api/v1/afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1
+$ curl -X GET 'http://localhost/api/v1/b82d0081-a0c6-496a-8ea0-910f259bcf6c?response_type=json'
 
 {
-  "id": "afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1",
+  "id": "b82d0081-a0c6-496a-8ea0-910f259bcf6c",
   "status": "finished",
-  "result_url": "/media/afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip"
+  "result_url": "/media/b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip"
 }
 
-$ curl -O http://localhost/media/afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
+$ curl -O http://localhost/media/b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip
 
 $ unzip -l afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
-Archive:  afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
+Archive:  b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip
   Length      Date    Time    Name
 ---------  ---------- -----   ----
-   779820  2016-07-10 02:02   pdf
-   177357  2016-07-10 02:02   thumbnails/0.png
-                              ...
-   130923  2016-07-10 02:02   thumbnails/30.png
+   374930  2019-08-15 12:34   kittens.pdf
+   192077  2019-08-15 12:35   thumbnails/4.png
+    22687  2019-08-15 12:35   thumbnails/5.png
+   175240  2019-08-15 12:35   thumbnails/1.png
+   102748  2019-08-15 12:35   thumbnails/2.png
+   125271  2019-08-15 12:35   thumbnails/3.png
+   239591  2019-08-15 12:35   thumbnails/0.png
 ---------                     -------
- 13723770                     32 files
+  1232544                     7 files
 
 ```
 
 # API
 
 ```
-POST (multipart/form-data) /api/v1/
+POST (multipart/form-data) /api/v1/filename=kittens&response_type=json`
 file=@kittens.docx
-filename=kittens
-json_response={Yes/No}
 options={ # json, optional
     "formats": ["pdf"] # desired formats to be converted in, optional
     "thumbnails": { # optional
@@ -119,12 +120,11 @@ options={ # json, optional
     }
 }
 
-GET /api/v1/{task_id}
-json_response={Yes/No}
+GET /api/v1/{task_id}&response_type=json
 ```
 
 # Install
-Currently, installing powered by docker-compose:
+Currently, installation is powered by docker-compose:
 
 ```bash
 $ git clone https://github.com/Harshad2294/docsbox.git && cd docsbox
@@ -160,7 +160,7 @@ Within a single physical server, docsbox can be scaled by docker-compose:
 $ docker-compose up
 $ docker-compose scale web=4 rqworker=8
 ```
-For multi-host deployment you'll need to create global syncronized volume (e.g. with flocker), global redis-server and mount it at `docker-compose.yml` file.
+For multi-host deployment, a global syncronized volume need to be created  (e.g. with flocker),a global redis-server and mount it using `docker-compose.yml` file.
 
 # Supported filetypes
 
