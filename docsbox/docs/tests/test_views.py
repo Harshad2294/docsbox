@@ -18,7 +18,7 @@ class BaseTestCase(unittest.TestCase):
 
     def submit_file(self, filename, options):
         with open(filename, "rb") as source:
-            response = self.client.post("/api/v1/", data={
+            response = self.client.post("/api/v1/?response_type=json&filename=sample", data={
                 "file": source,
                 "options": ujson.dumps(options),
             })
@@ -35,16 +35,15 @@ class DocumentViewTestCase(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(json.get("id"))
         self.assertEqual(json.get("status"), "queued")
-        response = self.client.get("/api/v1/{0}".format(json.get("id")))
+        response = self.client.get("/api/v1/{0}?response_type=json".format(json.get("id")))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(ujson.loads(response.data), {
             "id": json.get("id"),
             "status": "queued",
-            "result_url": None,
         })
 
     def test_get_task_by_invalid_uuid(self):
-        response = self.client.get("/api/v1/uuid-with-ponies")
+        response = self.client.get("/api/v1/uuid-with-ponies?response_type=json")
         self.assertEqual(response.status_code, 404)
         self.assertEqual(ujson.loads(response.data), {
             "message": "Unknown task_id"
@@ -53,7 +52,7 @@ class DocumentViewTestCase(BaseTestCase):
 class DocumentCreateViewTestCase(BaseTestCase):
 
     def test_submit_without_file(self):
-        response = self.client.post("/api/v1/", data={
+        response = self.client.post("/api/v1/?response_type=json&filename=sample", data={
             "options": ujson.dumps(["pdf"])
         })
         json = ujson.loads(response.data)
