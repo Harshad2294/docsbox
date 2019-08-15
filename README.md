@@ -4,31 +4,62 @@
 `docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document converting.
 
 ```bash
-$ curl -F "file=@kittens.docx" -F "filename=kittens" -F "json_response=Yes" http://localhost/api/v1/
+$ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=json&filename=kittens'
 
 {
     "id": "9b643d78-d0c8-4552-a0c5-111a89896176",
     "status": "queued"
 }
 
-$ curl -X GET -d "json_response=Yes" http://localhost/api/v1/9b643d78-d0c8-4552-a0c5-111a89896176
+
+$ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=xml&filename=kittens'
+
+<?xml version='1.0'?>
+<root>
+    <id>5bd02e2f-7b31-4639-9bcd-b9e18961dacf</id>
+    <status>queued</status>
+</root>
+
+
+$ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=text&filename=kittens'
+
+cce76d66-54d9-41e3-88f9-8d6affa32dbd
+
+
+$ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=json'
 
 {
-    "id": "9b643d78-d0c8-4552-a0c5-111a89896176",
-    "result_url": "/media/9b643d78-d0c8-4552-a0c5-111a89896176.zip",
-    "status": "finished"
+    "status": "finished",
+    "result_url": "/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip",
+    "id": "cce76d66-54d9-41e3-88f9-8d6affa32dbd"
 }
 
-$ curl -O http://localhost/media/9b643d78-d0c8-4552-a0c5-111a89896176.zip
 
-$ unzip -l 9b643d78-d0c8-4552-a0c5-111a89896176.zip
+curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=text'
 
-Archive:  9b643d78-d0c8-4552-a0c5-111a89896176.zip
+finished,/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
+
+
+curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=xml'
+
+<?xml version='1.0'?>
+<root>
+    <id>cce76d66-54d9-41e3-88f9-8d6affa32dbd</id>
+    <status>finished</status>
+    <result_url>/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip</result_url>
+</root>
+
+
+$ curl -O http://localhost/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
+
+$ unzip -l cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
+
+Archive:  cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
   Length      Date    Time    Name
 ---------  ---------- -----   ----
-    11135  2016-07-08 05:31   txt
-   373984  2016-07-08 05:31   kittens.pdf
-   147050  2016-07-08 05:31   html
+    11135  2019-08-15 05:31   txt
+   373984  2019-08-15 05:31   kittens.pdf
+   147050  2019-08-15 05:31   html
 ---------                     -------
    532169                     3 files
 ```

@@ -1,10 +1,11 @@
 import ujson
 import datetime
+import xml.etree.ElementTree as ET
 
 from magic import Magic
 from tempfile import NamedTemporaryFile
 
-from flask import request
+from flask import request,Response
 from flask_restful import Resource, abort
 
 from docsbox import app, rq
@@ -20,11 +21,25 @@ class DocumentView(Resource):
         queue = rq.get_queue()
         task = queue.fetch_job(task_id)
         if task:
-            json_response = request.args['json_response']
-            if json_response is not None and json_response == "No" and task.result is not None:
-                return task.status+","+task.result
-            elif json_response is not None and json_response == "No" and task.result == None:
-                return "processing"
+            response_type = request.args['response_type']
+            if response_type is not None and response_type == "text" and task.result is not None:
+                return Response(task.status+","+task.result,mimetype='text/plain')
+            elif response_type is not None and response_type == "text" and task.result == None:
+                return Response("processing",mimetype='text/plain')
+            elif response_type is not None and response_type == "xml" and task.result is not None:
+                xmlstr = "<?xml version='1.0'?>"
+                xmlstr+= "<root>"
+                xmlstr+= "<id>"+str(task.id)+"</id>"
+                xmlstr+= "<status>"+str(task.status)+"</status>"
+                xmlstr+= "<result_url>"+str(task.result)+"</result_url>"
+                xmlstr+= "</root>"
+                return Response(xmlstr,mimetype='text/xml')
+            elif response_type is not None and response_type == "xml" and task.result == None:
+                xmlstr = "<?xml version='1.0'?>"
+                xmlstr+= "<root>"
+                xmlstr+= "<status>"+str(task.status)+"</status>"
+                xmlstr+= "</root>"
+                return Response(xmlstr,mimetype='text/xml')
             else:
                 return {
                     "id": task.id,
@@ -47,8 +62,8 @@ class DocumentCreateView(Resource):
             return abort(400, message="file field is required")
         else:
             with NamedTemporaryFile(delete=False, prefix=app.config["MEDIA_PATH"]) as tmp_file:
-                filename = request.form['filename']
-                json_response = request.form['json_response']
+                filename = request.args['filename']
+                response_type = request.args['response_type']
                 request.files["file"].save(tmp_file)
                 tmp_file.flush()
                 tmp_file.close()
@@ -96,8 +111,15 @@ class DocumentCreateView(Resource):
                 task = process_document.queue(filename, tmp_file.name, options, {
                     "mimetype": mimetype,
                 })
-        if json_response is not None and json_response == "No":
-            return task.id
+        if response_type is not None and response_type == "text":
+            return Response(task.id,mimetype='text/plain')
+        elif response_type is not None and response_type == "xml":
+            xmlstr = "<?xml version='1.0'?>"
+            xmlstr+= "<root>"
+            xmlstr+= "<id>"+str(task.id)+"</id>"
+            xmlstr+= "<status>"+str(task.status)+"</status>"
+            xmlstr+= "</root>"
+            return Response(xmlstr,mimetype='text/xml')
         else:
             return {
                 "id": task.id,
