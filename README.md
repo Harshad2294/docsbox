@@ -1,6 +1,6 @@
 # docsbox [![Build Status](https://travis-ci.org/Harshad2294/docsbox.svg?branch=master)](https://travis-ci.org/Harshad2294/docsbox/)
 
-`docsbox` is a standalone service that allows you convert office documents, like .docx and .pptx, into more useful filetypes like PDF, for viewing it in browser with PDF.js, or HTML for organizing full-text search of document content.  
+`docsbox` is a standalone service that allows you to convert office documents, like .docx and .pptx, into more useful filetypes like PDF, for viewing it in browser with PDF.js, or HTML for organizing full-text search of document content.  
 `docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document converting.
 
 ```bash
@@ -99,7 +99,7 @@ $ docker-compose build
 $ docker-compose up
 ```
 
-It'll start this services:
+Services started by Docker:
 
 ```bash
 CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                    NAMES
