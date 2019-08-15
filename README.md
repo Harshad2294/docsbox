@@ -3,6 +3,8 @@
 `docsbox` is a standalone service that allows you to convert office documents, like .docx and .pptx, into more useful filetypes like PDF, for viewing it in browser with PDF.js, or HTML for organizing full-text search of document content.  
 `docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document converting.
 
+`Accepted 'response_type' : json,text,xml`
+
 ```bash
 $ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=json&filename=kittens'
 
