@@ -3,11 +3,11 @@ import os
 REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
 RQ_REDIS_URL = REDIS_URL
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__)) 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 MEDIA_PATH = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"
 
-SUPPORTED_FORMATS = { 
+SUPPORTED_FORMATS = {
     "pdf": {
         "path": "pdf",
         "fmt": "pdf",
@@ -41,7 +41,7 @@ SUPPORTED_MIMETYPES = {
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
         "formats": DOCUMENT_EXPORT_FORMATS,
     },
-    
+
     # LibreOffice Writer
     "application/vnd.oasis.opendocument.text": {
         "formats": DOCUMENT_EXPORT_FORMATS,
