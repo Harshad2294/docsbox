@@ -102,7 +102,7 @@ Archive:  b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip
 # API
 
 ```
-POST (multipart/form-data) /api/v1/filename=kittens&response_type=json`
+POST (multipart/form-data) /api/v1/filename=kittens&response_type=json
 file=@kittens.docx
 options={ # json, optional
     "formats": ["pdf"] # desired formats to be converted in, optional
