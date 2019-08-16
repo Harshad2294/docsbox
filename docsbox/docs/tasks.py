@@ -31,7 +31,6 @@ def process_document(filename, path, options, meta):
             with TemporaryDirectory() as tmp_dir: # create temp dir where output'll be stored
                 for fmt in options["formats"]: # iterate over requested formats
                     current_format = app.config["SUPPORTED_FORMATS"][fmt]
-                    #output_path = os.path.join(tmp_dir, current_format["path"])
                     output_path = os.path.join(tmp_dir, filename+"."+current_format["path"])
                     original_document.saveAs(output_path, fmt=current_format["fmt"])
                 if options.get("thumbnails", None):

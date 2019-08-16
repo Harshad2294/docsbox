@@ -54,12 +54,12 @@ class DocumentCreateView(Resource):
 
     def post(self):
         """
-        Recieves file and options, checks file mimetype,
-        validates options and creates converting task
+        Receives file and options, checks file mimetype,
+        validates options and creates a task
         """
         json_response = None
         if "file" not in request.files:
-            return abort(400, message="file field is required")
+            return abort(400, message="'file' field is required")
         else:
             with NamedTemporaryFile(delete=False, prefix=app.config["MEDIA_PATH"]) as tmp_file:
                 filename = request.args['filename']
