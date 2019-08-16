@@ -6,14 +6,14 @@
 `Accepted 'response_type' : json,text,xml`
 
 ```bash
-$ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=json&filename=kittens'
+curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=json&filename=kittens'
 {
     "id": "9b643d78-d0c8-4552-a0c5-111a89896176",
     "status": "queued"
 }
 
 
-$ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=xml&filename=kittens'
+curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=xml&filename=kittens'
 <?xml version='1.0'?>
 <root>
     <id>5bd02e2f-7b31-4639-9bcd-b9e18961dacf</id>
@@ -21,11 +21,11 @@ $ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=xml&filena
 </root>
 
 
-$ curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=text&filename=kittens'
+curl -F "file=@kittens.doc" 'http://localhost/api/v1/?response_type=text&filename=kittens'
 cce76d66-54d9-41e3-88f9-8d6affa32dbd
 
 
-$ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=json'
+curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=json'
 {
     "status": "finished",
     "result_url": "/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip",
@@ -33,11 +33,11 @@ $ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?resp
 }
 
 
-$ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=text'
+curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=text'
 finished,/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
 
 
-$ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=xml'
+curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?response_type=xml'
 <?xml version='1.0'?>
 <root>
     <id>cce76d66-54d9-41e3-88f9-8d6affa32dbd</id>
@@ -46,9 +46,9 @@ $ curl -X GET 'http://localhost/api/v1/cce76d66-54d9-41e3-88f9-8d6affa32dbd?resp
 </root>
 
 
-$ curl -O http://localhost/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
+curl -O http://localhost/media/cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
 
-$ unzip -l cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
+unzip -l cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
 Archive:  cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
   Length      Date    Time    Name
 ---------  ---------- -----   ----
@@ -60,7 +60,7 @@ Archive:  cce76d66-54d9-41e3-88f9-8d6affa32dbd.zip
 ```
 
 ```bash
-$ cat options.json
+cat options.json
 {
   "formats": ["pdf"],
   "thumbnails": {
@@ -68,22 +68,22 @@ $ cat options.json
   }
 }
 
-$ curl -F "file=@kittens.doc" -F "options=<options.json" 'http://localhost/api/v1/?response_type=json&filename=kittens'
+curl -F "file=@kittens.doc" -F "options=<options.json" 'http://localhost/api/v1/?response_type=json&filename=kittens'
 {
   "id": "b82d0081-a0c6-496a-8ea0-910f259bcf6c",
   "status": "queued"
 }
 
-$ curl -X GET 'http://localhost/api/v1/b82d0081-a0c6-496a-8ea0-910f259bcf6c?response_type=json'
+curl -X GET 'http://localhost/api/v1/b82d0081-a0c6-496a-8ea0-910f259bcf6c?response_type=json'
 {
   "id": "b82d0081-a0c6-496a-8ea0-910f259bcf6c",
   "status": "finished",
   "result_url": "/media/b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip"
 }
 
-$ curl -O http://localhost/media/b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip
+curl -O http://localhost/media/b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip
 
-$ unzip -l afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
+unzip -l afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
 Archive:  b82d0081-a0c6-496a-8ea0-910f259bcf6c.zip
   Length      Date    Time    Name
 ---------  ---------- -----   ----
@@ -118,9 +118,9 @@ GET /api/v1/{task_id}&response_type=json
 Currently, installation is powered by docker-compose:
 
 ```bash
-$ git clone https://github.com/Harshad2294/docsbox.git && cd docsbox
-$ docker-compose build
-$ docker-compose up
+git clone https://github.com/Harshad2294/docsbox.git && cd docsbox
+docker-compose build
+docker-compose up
 ```
 
 Services started by Docker:
@@ -148,8 +148,8 @@ LIBREOFFICE_PATH - path to libreoffice (default: /usr/lib/libreoffice/program/)
 # Scaling
 Within a single physical server, docsbox can be scaled by docker-compose:
 ```bash
-$ docker-compose up
-$ docker-compose scale web=4 rqworker=8
+docker-compose up
+docker-compose scale web=4 rqworker=8
 ```
 For multi-host deployment, a global syncronized volume need to be created  (e.g. with flocker),a global redis-server and mount it using `docker-compose.yml` file.
 
