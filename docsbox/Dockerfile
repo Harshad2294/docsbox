@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER Dmitry Veselov <d.a.veselov@yandex.ru>
+MAINTAINER Harshad Shettigar <Harshad2294@github.com>
 
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y libffi-dev libmagic-dev libmagickwand-dev
