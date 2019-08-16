@@ -59,7 +59,7 @@ class DocumentCreateViewTestCase(BaseTestCase):
         json = ujson.loads(response.data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(json, {
-            "message": "file field is required"
+            "message": "'file' field is required"
         })
 
     def test_submit_invalid_mimetype(self):
