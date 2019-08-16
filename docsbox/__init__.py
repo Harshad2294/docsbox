@@ -24,7 +24,7 @@ api = Api(app)
 rq = RQ(app)
 
 from docsbox.docs.views import DocumentView, DocumentCreateView
-    
+
 api.add_resource(DocumentView, "/api/v1/<task_id>")
 api.add_resource(DocumentCreateView, "/api/v1/")
 
