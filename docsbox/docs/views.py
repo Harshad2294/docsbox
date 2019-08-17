@@ -41,11 +41,14 @@ class DocumentView(Resource):
                 xmlstr+= "</root>"
                 return Response(xmlstr,mimetype='text/xml')
             else:
-                return {
-                    "id": task.id,
-                    "status": task.status,
-                    "result_url": task.result
-                }
+                if task.result == None:
+                    task.result = "-"
+                jsonstr = '{'
+                jsonstr+= '  "id": "'+str(task.id)+'",'
+                jsonstr+= '  "status": "'+str(task.status)+'",'
+                jsonstr+= '  "result_url": "'+str(task.result)+'"'
+                jsonstr+= '}'
+                return Response(jsonstr,mimetype='application/json')
         else:
             return abort(404, message="Unknown task_id")
 
@@ -121,7 +124,8 @@ class DocumentCreateView(Resource):
             xmlstr+= "</root>"
             return Response(xmlstr,mimetype='text/xml')
         else:
-            return {
-                "id": task.id,
-                "status": task.status,
-            }
+            jsonstr = '{'
+            jsonstr+= '  "id": "'+str(task.id)+'",'
+            jsonstr+= '  "status": "'+str(task.status)+'"'
+            jsonstr+= '}'
+            return Response(jsonstr,mimetype='application/json')
