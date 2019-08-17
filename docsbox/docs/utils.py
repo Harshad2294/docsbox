@@ -32,7 +32,7 @@ def make_thumbnails(image, tmp_dir, size):
             filename = os.path.join(thumbnails_folder, "{0}.png".format(index))
             page.resize(width, height)
             if app.config["THUMBNAILS_QUANTIZE"]:
-                page.quantize(app.config["THUMBNAILS_QUANTIZE_COLORS"], 
+                page.quantize(app.config["THUMBNAILS_QUANTIZE_COLORS"],
                               app.config["THUMBNAILS_QUANTIZE_COLORSPACE"], 0, True, True)
             page.save(filename=filename)
     else:
