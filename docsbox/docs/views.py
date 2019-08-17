@@ -41,12 +41,13 @@ class DocumentView(Resource):
                 xmlstr+= "</root>"
                 return Response(xmlstr,mimetype='text/xml')
             else:
-                if task.result == None:
-                    task.result = "-"
+                resulturl = task.result
+                if resulturl == None:
+                    resulturl = "-"
                 jsonstr = '{'
                 jsonstr+= '  "id": "'+str(task.id)+'",'
                 jsonstr+= '  "status": "'+str(task.status)+'",'
-                jsonstr+= '  "result_url": "'+str(task.result)+'"'
+                jsonstr+= '  "result_url": "'+str(resulturl)+'"'
                 jsonstr+= '}'
                 return Response(jsonstr,mimetype='application/json')
         else:
