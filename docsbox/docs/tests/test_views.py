@@ -40,7 +40,7 @@ class DocumentViewTestCase(BaseTestCase):
         self.assertEqual(ujson.loads(response.data), {
             "id": json.get("id"),
             "status": "queued",
-            "result_url": None,
+            "result_url": "-",
         })
 
     def test_get_task_by_invalid_uuid(self):
