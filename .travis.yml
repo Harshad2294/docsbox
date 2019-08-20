@@ -8,6 +8,6 @@ before_install:
   - pip install codecov
 script:
   - docker-compose build
-  - docker-compose run web nosetests
+  - docker-compose run web nosetests --with-coverage
 after_success:
   - codecov
