@@ -9,4 +9,5 @@ before_install:
 script:
   - docker-compose build
   - docker-compose run web nosetests
+after_success:
   - codecov
