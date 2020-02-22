@@ -11,5 +11,5 @@ script:
   - docker-compose build
   - docker-compose run web nosetests --with-coverage
 after_success:
-  - codecov
   - coverage xml
+  - codecov
