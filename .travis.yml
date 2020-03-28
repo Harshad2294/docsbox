@@ -10,6 +10,5 @@ before_install:
 script:
   - docker-compose build
   - docker-compose run web nosetests --with-coverage
-after_success:
   - coverage xml
   - codecov
