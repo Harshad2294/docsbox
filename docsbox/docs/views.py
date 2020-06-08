@@ -112,9 +112,14 @@ class DocumentCreateView(Resource):
                         }
                     else:
                         options = app.config["DEFAULT_OPTIONS"]
-                task = process_document.queue(filename, tmp_file.name, options, {
-                    "mimetype": mimetype,
-                })
+                if "secure_pdf" in request.args and (request.args['secure_pdf']=="True" or request.args['secure_pdf']=="true"):
+                    task = process_document.queue(filename, tmp_file.name, options, {
+                        "mimetype": mimetype,
+                        },True)
+                else:
+                    task = process_document.queue(filename, tmp_file.name, options, {
+                        "mimetype": mimetype,
+                        })
         if response_type is not None and response_type == "text":
             return Response(task.id,mimetype='text/plain')
         elif response_type is not None and response_type == "xml":

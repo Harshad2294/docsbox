@@ -17,3 +17,5 @@ ujson==1.35
 nose==1.3.7
 cffi==1.7.0
 coverage==4.5
+#pypdf3==1.0.1
+pypdf3

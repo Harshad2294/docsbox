@@ -2,7 +2,7 @@ server {
 
     listen 80;
 
-    client_max_body_size 10m;
+    client_max_body_size 1024m;
 
     charset utf-8;
 

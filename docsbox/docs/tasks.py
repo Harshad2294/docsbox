@@ -10,7 +10,7 @@ from rq import get_current_job
 
 from docsbox import app, rq
 from docsbox.docs.utils import make_zip_archive, make_thumbnails
-
+from docsbox.docs.securepdf import secure
 
 
 @rq.job(timeout=app.config["REDIS_JOB_TIMEOUT"])
@@ -23,7 +23,7 @@ def remove_file(path):
 
 
 @rq.job(timeout=app.config["REDIS_JOB_TIMEOUT"])
-def process_document(filename, path, options, meta):
+def process_document(filename, path, options, meta, secure_pdf=False):
     current_task = get_current_job()
     with Office(app.config["LIBREOFFICE_PATH"]) as office: # acquire libreoffice lock
         with office.documentLoad(path) as original_document: # open original document
@@ -33,6 +33,8 @@ def process_document(filename, path, options, meta):
                     current_format = app.config["SUPPORTED_FORMATS"][fmt]
                     output_path = os.path.join(tmp_dir, filename+"."+current_format["path"])
                     original_document.saveAs(output_path, fmt=current_format["fmt"])
+                    if True == secure_pdf and current_format["path"]=="pdf":
+                        secure(output_path)
                 if options.get("thumbnails", None):
                     is_created = False
                     if meta["mimetype"] == "application/pdf":
