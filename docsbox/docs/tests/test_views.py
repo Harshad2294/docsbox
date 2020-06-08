@@ -63,13 +63,15 @@ class DocumentCreateViewTestCase(BaseTestCase):
         })
 
     def test_submit_invalid_securepdf_value(self):
-        response = self.client.post("/api/v1/?response_type=json&filename=sample&secure_pdf=yes", data={
-            "options": ujson.dumps(["pdf"])
-        })
+        filename = os.path.join(self.samples, "sample.docx")
+        with open(filename, "rb") as source:
+            response = self.client.post("/api/v1/?response_type=json&filename=sample&secure_pdf=yes", data={
+                "file": source,
+            })
         json = ujson.loads(response.data)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(json, {
-            "message": "Invalid 'secure_pdf' value."
+            "message": "Invalid 'secure_pdf' value"
         })
 
     def test_submit_invalid_mimetype(self):
