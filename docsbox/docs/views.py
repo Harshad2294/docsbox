@@ -117,6 +117,8 @@ class DocumentCreateView(Resource):
                         "mimetype": mimetype,
                         },True)
                 else:
+                    if "secure_pdf" in request.args and (request.args['secure_pdf'] not in ["True","true","False","false"]):
+                        return abort(400, message="Invalid 'secure_pdf' value")
                     task = process_document.queue(filename, tmp_file.name, options, {
                         "mimetype": mimetype,
                         })
