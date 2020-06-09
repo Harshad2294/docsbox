@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from PyPDF3 import PdfFileReader, PdfFileWriter
 import PyPDF3
 import random
