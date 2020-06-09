@@ -40,7 +40,7 @@ class DocumentView(Resource):
                 xmlstr+= "<status>"+str(task.status)+"</status>"
                 xmlstr+= "</root>"
                 return Response(xmlstr,mimetype='text/xml')
-            else:
+            elif (response_type is not None and response_type == "json") or (response_type is None):
                 resulturl = task.result
                 if resulturl == None:
                     resulturl = "-"
@@ -50,6 +50,8 @@ class DocumentView(Resource):
                 jsonstr+= '  "result_url": "'+str(resulturl)+'"'
                 jsonstr+= '}'
                 return Response(jsonstr,mimetype='application/json')
+            else:
+                return abort(400, message="Invalid 'response_type' value")
         else:
             return abort(404, message="Unknown task_id")
 
@@ -112,9 +114,16 @@ class DocumentCreateView(Resource):
                         }
                     else:
                         options = app.config["DEFAULT_OPTIONS"]
-                task = process_document.queue(filename, tmp_file.name, options, {
-                    "mimetype": mimetype,
-                })
+                if "secure_pdf" in request.args and (request.args['secure_pdf']=="True" or request.args['secure_pdf']=="true"):
+                    task = process_document.queue(filename, tmp_file.name, options, {
+                        "mimetype": mimetype,
+                        },True)
+                else:
+                    if "secure_pdf" in request.args and (request.args['secure_pdf'] not in ["True","true","False","false"]):
+                        return abort(400, message="Invalid 'secure_pdf' value")
+                    task = process_document.queue(filename, tmp_file.name, options, {
+                        "mimetype": mimetype,
+                        })
         if response_type is not None and response_type == "text":
             return Response(task.id,mimetype='text/plain')
         elif response_type is not None and response_type == "xml":
@@ -124,9 +133,11 @@ class DocumentCreateView(Resource):
             xmlstr+= "<status>"+str(task.status)+"</status>"
             xmlstr+= "</root>"
             return Response(xmlstr,mimetype='text/xml')
-        else:
+        elif response_type is not None and response_type == "json":
             jsonstr = '{'
             jsonstr+= '  "id": "'+str(task.id)+'",'
             jsonstr+= '  "status": "'+str(task.status)+'"'
             jsonstr+= '}'
             return Response(jsonstr,mimetype='application/json')
+        else:
+            return abort(400, message="Invalid 'response_type' value")

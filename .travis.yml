@@ -9,6 +9,4 @@ before_install:
   - pip install coverage
 script:
   - docker-compose build
-  - docker-compose run web nosetests --with-coverage
-  - coverage xml
-  - codecov
+  - docker-compose run web nosetests
